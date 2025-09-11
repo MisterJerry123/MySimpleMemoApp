@@ -1,10 +1,8 @@
 package com.example.memousingroomdb.recyclerview
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.memousingroomdb.R
 import com.example.memousingroomdb.databinding.ItemMemoBinding
 import com.example.memousingroomdb.db.Memo
 

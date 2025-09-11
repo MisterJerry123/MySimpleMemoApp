@@ -3,6 +3,7 @@ package com.example.memousingroomdb
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.memousingroomdb.databinding.ActivityAddMemoBinding
@@ -26,9 +27,16 @@ class AddMemoActivity : AppCompatActivity() {
         }
 
         binding.btnSave.setOnClickListener {
-            db?.memoDao()?.insertMemo(Memo(title=binding.etTitle.text.toString(),date = LocalDate.now().toString()))
-            finish()
-            startActivity(intent)
+
+            if(binding.etTitle.text.isBlank()){
+                Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                db?.memoDao()?.insertMemo(Memo(title=binding.etTitle.text.toString(),date = LocalDate.now().toString()))
+                finish()
+                startActivity(intent)
+            }
+
         }
     }
 }
