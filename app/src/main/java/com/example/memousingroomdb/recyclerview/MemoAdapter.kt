@@ -1,12 +1,23 @@
 package com.example.memousingroomdb.recyclerview
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memousingroomdb.databinding.ItemMemoBinding
 import com.example.memousingroomdb.db.Memo
 
 class MemoAdapter(private var memoList:List<Memo>?):RecyclerView.Adapter<MemoAdapter.MemoViewHolder>() {
+
+    interface OnItemClickListener{
+        fun onItemClick(view: View, pos:Int)
+    }
+    private var listener : OnItemClickListener? =null
+    private lateinit var itemClickListener : OnItemClickListener
+
+    fun setOnItemClickListener(listener: OnItemClickListener){
+        this.itemClickListener=listener
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
@@ -26,6 +37,9 @@ class MemoAdapter(private var memoList:List<Memo>?):RecyclerView.Adapter<MemoAda
     }
 
     override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
+        holder.itemView.setOnClickListener{
+            itemClickListener.onItemClick(it,position)
+        }
         val currentMemo = memoList?.get(position)
         if (currentMemo != null) {
             holder.bind(currentMemo)
