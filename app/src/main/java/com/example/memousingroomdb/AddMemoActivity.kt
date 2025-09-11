@@ -1,38 +1,35 @@
 package com.example.memousingroomdb
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.memousingroomdb.databinding.ActivityAddMemoBinding
 import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoDatabase
+import kotlinx.datetime.*
+import java.time.LocalDate
 
 class AddMemoActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityAddMemoBinding
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_memo)
-
-
-        val btnCancel = findViewById<Button>(R.id.btn_cancel)
-        val btnSave = findViewById<Button>(R.id.btn_save)
+        binding = ActivityAddMemoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val db = MemoDatabase.getInstance(this)
-        val etTitle = findViewById<EditText>(R.id.et_title)
         val intent = Intent(this,MainActivity::class.java)
 
-        btnCancel.setOnClickListener {
-            finish()
-            startActivity(intent)
-
-        }
-        btnSave.setOnClickListener {
-            db?.memoDao()?.insertMemo(Memo(title=etTitle.text.toString(),date = "2025-09-10"))
+        binding.btnCancel.setOnClickListener {
             finish()
             startActivity(intent)
         }
 
+        binding.btnSave.setOnClickListener {
+            db?.memoDao()?.insertMemo(Memo(title=binding.etTitle.text.toString(),date = LocalDate.now().toString()))
+            finish()
+            startActivity(intent)
+        }
     }
 }

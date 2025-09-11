@@ -9,6 +9,9 @@ plugins {
 android {
     namespace = "com.example.memousingroomdb"
     compileSdk = 35
+    buildFeatures{
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.example.memousingroomdb"
@@ -48,6 +51,9 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler.v250)
+
+    //time
+    implementation(libs.kotlinx.datetime)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
