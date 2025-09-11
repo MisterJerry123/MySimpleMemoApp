@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.memousingroomdb.databinding.ActivityAddMemoBinding
 import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoDatabase
-import kotlinx.datetime.*
 import java.time.LocalDate
 
 class AddMemoActivity : AppCompatActivity() {
