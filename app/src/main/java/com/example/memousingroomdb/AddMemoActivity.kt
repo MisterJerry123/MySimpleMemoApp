@@ -32,7 +32,7 @@ class AddMemoActivity : AppCompatActivity() {
                 Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
             else{
-                db?.memoDao()?.insertMemo(Memo(title=binding.etTitle.text.toString(),date = LocalDate.now().toString()))
+                db?.memoDao()?.insertMemo(Memo(title=binding.etTitle.text.toString(),content = binding.etContent.text.toString(),date = LocalDate.now().toString()))
                 finish()
                 startActivity(intent)
             }

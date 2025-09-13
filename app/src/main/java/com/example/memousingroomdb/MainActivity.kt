@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         adapter.setOnItemClickListener(object : MemoAdapter.OnItemClickListener{
             override fun onItemClick(view: View, pos: Int) {
 
-                Toast.makeText(view.context, memoList?.get(pos)!!.title, Toast.LENGTH_SHORT).show()
+                Toast.makeText(view.context, memoList?.get(pos)!!.content, Toast.LENGTH_SHORT).show()
             }
         })
         recyclerView.layoutManager = LinearLayoutManager(this)
