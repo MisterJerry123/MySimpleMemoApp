@@ -1,4 +1,4 @@
-package com.example.memousingroomdb.recyclerview
+package com.example.memousingroomdb
 
 import android.view.LayoutInflater
 import android.view.View
