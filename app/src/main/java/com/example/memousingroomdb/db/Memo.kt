@@ -2,6 +2,7 @@ package com.example.memousingroomdb.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
 data class Memo(
@@ -10,4 +11,4 @@ data class Memo(
     val title:String,
     val date:String,
     val content:String
-)
+):Serializable
