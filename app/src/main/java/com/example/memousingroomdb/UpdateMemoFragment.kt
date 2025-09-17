@@ -9,16 +9,16 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.example.memousingroomdb.databinding.FragmentDetailMemoBinding
+import com.example.memousingroomdb.databinding.FragmentUpdateMemoBinding
 import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoDao
 import com.example.memousingroomdb.db.MemoDatabase
 import java.time.LocalDate
 
 
-class DetailMemoFragment : Fragment() {
-    private var _binding:FragmentDetailMemoBinding?=null
+class UpdateMemoFragment : Fragment() {
+    private var _binding:FragmentUpdateMemoBinding?=null
 
     private val binding get() = _binding!!
 
@@ -26,7 +26,7 @@ class DetailMemoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDetailMemoBinding.inflate(inflater,container,false)
+        _binding = FragmentUpdateMemoBinding.inflate(inflater,container,false)
         return binding.root
     }
 
@@ -45,41 +45,27 @@ class DetailMemoFragment : Fragment() {
 
 
         if(memo!=null){
-            binding.tvMemoTitle.text = "${memo.title}"
-            binding.tvMemoDate.text = memo.date
-            if(memo.content.isBlank()){
-                binding.tvMemoContent.text = "내용이 없습니다."
-            }
-            else{
-                binding.tvMemoContent.text = memo.content
-
-            }
+            binding.etTitle.setText(memo.title)
+            binding.etContent.setText(memo.content)
         }
 
-        binding.btnMemoDelete.setOnClickListener {
-            if(binding.btnMemoDelete.text=="메모 지우기"){
-                db?.memoDao()?.deleteMemo(memo!!)
-                Toast.makeText(requireContext(), "메모가 지워졌어요", Toast.LENGTH_SHORT).show()
-            }
-            else{//메모 수정 취소하기
-                binding.btnMemoUpdate.text="메모 수정하기"
-                binding.btnMemoDelete.text="메모 지우기"
-                //TODO 메모 edittext editable 해제
-            }
+        binding.btnMemoCancel.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+
         }
 
         binding.btnMemoUpdate.setOnClickListener {
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fcv,UpdateMemoFragment.newInstance(memo!!))
-            transaction.addToBackStack(null)
-           transaction.commit()
+            db?.memoDao()?.updateMemo(Memo(id= memo!!.id,title = binding.etTitle.text.toString(), date = "${LocalDate.now()} 수정됨", content = binding.etContent.text.toString()))
+
+            requireActivity().supportFragmentManager.popBackStack()
+
         }
 
     }
 
     companion object{
-        fun newInstance(memo: Memo):DetailMemoFragment{
-            val fragment = DetailMemoFragment()
+        fun newInstance(memo: Memo):UpdateMemoFragment{
+            val fragment = UpdateMemoFragment()
             val args = Bundle()
             args.putSerializable("clickedMemo",memo)
             fragment.arguments = args
