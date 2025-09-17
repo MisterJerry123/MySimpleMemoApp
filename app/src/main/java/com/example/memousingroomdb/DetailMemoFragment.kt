@@ -43,7 +43,13 @@ class DetailMemoFragment : Fragment() {
         if(memo!=null){
             binding.tvMemoTitle.text = "${memo.title}"
             binding.tvMemoDate.text = "${memo.date}"
-            binding.tvMemoContent.text = memo.content
+            if(memo.content.isBlank()){
+                binding.tvMemoContent.text = "(내용이 없습니다.)"
+            }
+            else{
+                binding.tvMemoContent.text = memo.content
+
+            }
         }
 
         binding.btnMemoDelete.setOnClickListener {
