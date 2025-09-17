@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.example.memousingroomdb.databinding.FragmentDetailMemoBinding
@@ -29,6 +30,8 @@ class DetailMemoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val db = MemoDatabase.getInstance(requireContext())
+
         val memo = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             arguments?.getSerializable("clickedMemo",Memo::class.java)
         }
@@ -44,6 +47,8 @@ class DetailMemoFragment : Fragment() {
         }
 
         binding.btnMemoDelete.setOnClickListener {
+            db?.memoDao()?.deleteMemo(memo!!)
+            Toast.makeText(requireContext(), "메모가 지워졌어요", Toast.LENGTH_SHORT).show()
 
 
         }

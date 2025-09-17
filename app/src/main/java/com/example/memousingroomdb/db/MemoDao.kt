@@ -1,6 +1,7 @@
 package com.example.memousingroomdb.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -11,6 +12,9 @@ interface MemoDao {
 
     @Query("SELECT * From memo")
     fun search():List<Memo>
+
+    @Delete
+    fun deleteMemo(memo:Memo)
 
 
 }
