@@ -42,15 +42,16 @@ class MemoAdapter(private var memoList:List<Memo>?):RecyclerView.Adapter<MemoAda
         }
         val currentMemo = memoList?.get(position)
         if (currentMemo != null) {
-            holder.bind(currentMemo)
+            holder.bind(currentMemo,position)
+
         }
     }
 
     class MemoViewHolder(private val binding:ItemMemoBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(memo:Memo){
+        fun bind(memo:Memo,pos:Int){
             binding.tvTitle.text=memo.title
             binding.tvDate.text=memo.date
-            binding.tvNumber.text=memo.id.toString()
+            binding.tvNumber.text=(pos+1).toString()
         }
 
     }
