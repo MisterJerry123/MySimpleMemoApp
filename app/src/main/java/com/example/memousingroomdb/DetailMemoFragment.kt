@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
 import com.example.memousingroomdb.databinding.FragmentDetailMemoBinding
 import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoDao
@@ -18,9 +19,12 @@ import java.time.LocalDate
 
 
 class DetailMemoFragment : Fragment() {
-    private var _binding:FragmentDetailMemoBinding?=null
 
+    private val sharedViewModel: MemoSharedViewModel by activityViewModels()
+
+    private var _binding:FragmentDetailMemoBinding?=null
     private val binding get() = _binding!!
+    var memo:Memo? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +39,23 @@ class DetailMemoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val db = MemoDatabase.getInstance(requireContext())
+        sharedViewModel.resultMemo.observe(viewLifecycleOwner){ result->
 
-        val memo = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            binding.tvMemoTitle.text = result.title
+            binding.tvMemoDate.text = result.date
+            if(result.content.isBlank()){
+                binding.tvMemoContent.text = "내용이 없습니다."
+            }
+            else{
+                binding.tvMemoContent.text = result.content
+            }
+            memo=result
+
+        }
+
+
+
+        memo = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             arguments?.getSerializable("clickedMemo",Memo::class.java)
         }
         else{
@@ -45,14 +64,13 @@ class DetailMemoFragment : Fragment() {
 
 
         if(memo!=null){
-            binding.tvMemoTitle.text = "${memo.title}"
-            binding.tvMemoDate.text = memo.date
-            if(memo.content.isBlank()){
+            binding.tvMemoTitle.text = "${memo!!.title}"
+            binding.tvMemoDate.text = memo!!.date
+            if(memo!!.content.isBlank()){
                 binding.tvMemoContent.text = "내용이 없습니다."
             }
             else{
-                binding.tvMemoContent.text = memo.content
-
+                binding.tvMemoContent.text = memo!!.content
             }
         }
 

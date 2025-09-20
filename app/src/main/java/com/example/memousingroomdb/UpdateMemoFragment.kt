@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.memousingroomdb.databinding.FragmentDetailMemoBinding
 import com.example.memousingroomdb.databinding.FragmentUpdateMemoBinding
 import com.example.memousingroomdb.db.Memo
@@ -18,6 +19,8 @@ import java.time.LocalDate
 
 
 class UpdateMemoFragment : Fragment() {
+    private val sharedViewModel: MemoSharedViewModel by activityViewModels()
+
     private var _binding:FragmentUpdateMemoBinding?=null
 
     private val binding get() = _binding!!
@@ -55,7 +58,10 @@ class UpdateMemoFragment : Fragment() {
         }
 
         binding.btnMemoUpdate.setOnClickListener {
-            db?.memoDao()?.updateMemo(Memo(id= memo!!.id,title = binding.etTitle.text.toString(), date = "${LocalDate.now()} 수정됨", content = binding.etContent.text.toString()))
+            val newMemo = Memo(id= memo!!.id,title = binding.etTitle.text.toString(), date = "${LocalDate.now()} 수정됨", content = binding.etContent.text.toString())
+            db?.memoDao()?.updateMemo(newMemo)
+            sharedViewModel.postResult(newMemo)
+
 
             requireActivity().supportFragmentManager.popBackStack()
 
