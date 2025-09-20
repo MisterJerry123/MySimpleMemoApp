@@ -17,7 +17,7 @@ import java.time.LocalDate
 class UpdateMemoFragment : Fragment() {
     private val sharedViewModel: MemoSharedViewModel by activityViewModels()
 
-    private var _binding:FragmentUpdateMemoBinding?=null
+    private var _binding: FragmentUpdateMemoBinding? = null
 
     private val binding get() = _binding!!
 
@@ -25,7 +25,7 @@ class UpdateMemoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentUpdateMemoBinding.inflate(inflater,container,false)
+        _binding = FragmentUpdateMemoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -35,15 +35,14 @@ class UpdateMemoFragment : Fragment() {
 
         val db = MemoDatabase.getInstance(requireContext())
 
-        val memo = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            arguments?.getSerializable("clickedMemo",Memo::class.java)
-        }
-        else{
+        val memo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable("clickedMemo", Memo::class.java)
+        } else {
             arguments?.getSerializable("clickedMemo") as? Memo
         }
 
 
-        if(memo!=null){
+        if (memo != null) {
             binding.etTitle.setText(memo.title)
             binding.etContent.setText(memo.content)
         }
@@ -54,22 +53,23 @@ class UpdateMemoFragment : Fragment() {
         }
 
         binding.btnMemoUpdate.setOnClickListener {
-            val newMemo = Memo(id= memo!!.id,title = binding.etTitle.text.toString(), date = "${LocalDate.now()} 수정됨", content = binding.etContent.text.toString())
+            val newMemo = Memo(
+                id = memo!!.id,
+                title = binding.etTitle.text.toString(),
+                date = "${LocalDate.now()} 수정됨",
+                content = binding.etContent.text.toString()
+            )
             db?.memoDao()?.updateMemo(newMemo)
             sharedViewModel.updateMemo(newMemo)
-
-
             requireActivity().supportFragmentManager.popBackStack()
-
         }
-
     }
 
-    companion object{
-        fun newInstance(memo: Memo):UpdateMemoFragment{
+    companion object {
+        fun newInstance(memo: Memo): UpdateMemoFragment {
             val fragment = UpdateMemoFragment()
             val args = Bundle()
-            args.putSerializable("clickedMemo",memo)
+            args.putSerializable("clickedMemo", memo)
             fragment.arguments = args
             return fragment
         }
