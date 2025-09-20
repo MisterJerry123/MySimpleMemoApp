@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.memousingroomdb.databinding.ActivityAddMemoBinding
@@ -25,6 +26,13 @@ class AddMemoActivity : AppCompatActivity() {
             finish()
             startActivity(intent)
         }
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                startActivity(intent)
+            }
+        }
+        onBackPressedDispatcher.addCallback(this,callback)
 
         binding.btnSave.setOnClickListener {
 
