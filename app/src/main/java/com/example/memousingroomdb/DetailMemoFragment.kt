@@ -22,15 +22,15 @@ class DetailMemoFragment : Fragment() {
 
     private val sharedViewModel: MemoSharedViewModel by activityViewModels()
 
-    private var _binding:FragmentDetailMemoBinding?=null
+    private var _binding: FragmentDetailMemoBinding? = null
     private val binding get() = _binding!!
-    var memo:Memo? = null
+    var memo: Memo? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDetailMemoBinding.inflate(inflater,container,false)
+        _binding = FragmentDetailMemoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -39,67 +39,57 @@ class DetailMemoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val db = MemoDatabase.getInstance(requireContext())
-        sharedViewModel.resultMemo.observe(viewLifecycleOwner){ result->
+        sharedViewModel.resultMemo.observe(viewLifecycleOwner) { result ->
 
             binding.tvMemoTitle.text = result.title
             binding.tvMemoDate.text = result.date
-            if(result.content.isBlank()){
+            if (result.content.isBlank()) {
                 binding.tvMemoContent.text = "내용이 없습니다."
-            }
-            else{
+            } else {
                 binding.tvMemoContent.text = result.content
             }
-            memo=result
+            memo = result
 
         }
 
 
 
-        memo = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            arguments?.getSerializable("clickedMemo",Memo::class.java)
-        }
-        else{
+        memo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable("clickedMemo", Memo::class.java)
+        } else {
             arguments?.getSerializable("clickedMemo") as? Memo
         }
 
 
-        if(memo!=null){
-            binding.tvMemoTitle.text = "${memo!!.title}"
+        if (memo != null) {
+            binding.tvMemoTitle.text = memo!!.title
             binding.tvMemoDate.text = memo!!.date
-            if(memo!!.content.isBlank()){
+            if (memo!!.content.isBlank()) {
                 binding.tvMemoContent.text = "내용이 없습니다."
-            }
-            else{
+            } else {
                 binding.tvMemoContent.text = memo!!.content
             }
         }
 
         binding.btnMemoDelete.setOnClickListener {
-            if(binding.btnMemoDelete.text=="메모 지우기"){
-                db?.memoDao()?.deleteMemo(memo!!)
-                Toast.makeText(requireContext(), "메모가 지워졌어요", Toast.LENGTH_SHORT).show()
-            }
-            else{//메모 수정 취소하기
-                binding.btnMemoUpdate.text="메모 수정하기"
-                binding.btnMemoDelete.text="메모 지우기"
-                //TODO 메모 edittext editable 해제
-            }
+            db?.memoDao()?.deleteMemo(memo!!)
+            Toast.makeText(requireContext(), "메모가 지워졌어요", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnMemoUpdate.setOnClickListener {
             val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fcv,UpdateMemoFragment.newInstance(memo!!))
+            transaction.replace(R.id.fcv, UpdateMemoFragment.newInstance(memo!!))
             transaction.addToBackStack(null)
-           transaction.commit()
+            transaction.commit()
         }
 
     }
 
-    companion object{
-        fun newInstance(memo: Memo):DetailMemoFragment{
+    companion object {
+        fun newInstance(memo: Memo): DetailMemoFragment {
             val fragment = DetailMemoFragment()
             val args = Bundle()
-            args.putSerializable("clickedMemo",memo)
+            args.putSerializable("clickedMemo", memo)
             fragment.arguments = args
             return fragment
         }
