@@ -3,11 +3,13 @@ package com.example.memousingroomdb
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memousingroomdb.databinding.ItemMemoBinding
 import com.example.memousingroomdb.db.Memo
 
-class MemoAdapter(private var memoList:List<Memo>?):RecyclerView.Adapter<MemoAdapter.MemoViewHolder>() {
+class MemoAdapter:ListAdapter<Memo,RecyclerView.ViewHolder>(DiffUtilCallback()){
+    // {
 
     interface OnItemClickListener{
         fun onItemClick(view: View, pos:Int)
@@ -26,26 +28,23 @@ class MemoAdapter(private var memoList:List<Memo>?):RecyclerView.Adapter<MemoAda
 
     }
 
-    override fun getItemCount(): Int {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if(memoList!=null){
-            return memoList!!.size
-        }
-        else{
-            return 0
-        }
-    }
-
-    override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
         holder.itemView.setOnClickListener{
             itemClickListener.onItemClick(it,position)
         }
-        val currentMemo = memoList?.get(position)
-        if (currentMemo != null) {
-            holder.bind(currentMemo,position)
 
+        if(holder is MemoViewHolder){
+            val currentMemo = getItem(position) as Memo
+            holder.bind(currentMemo,position)
         }
+
     }
+
+
+//    override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
+//
+//    }
 
     class MemoViewHolder(private val binding:ItemMemoBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(memo:Memo,pos:Int){
@@ -53,6 +52,17 @@ class MemoAdapter(private var memoList:List<Memo>?):RecyclerView.Adapter<MemoAda
             binding.tvDate.text=memo.date
             binding.tvNumber.text=(pos+1).toString()
         }
+    }
 
+    fun deleteMemo(memo:Memo){
+        val newList = currentList.toMutableList()
+        newList.remove(memo)
+        submitList(newList)
+    }
+
+    fun insertMemo(memo: Memo){
+        val newList = currentList.toMutableList()
+        newList.add(memo)
+        submitList(newList)
     }
 }

@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         memoList = db?.memoDao()?.search()
 
         val intent = Intent(this,AddMemoActivity::class.java)
-        val adapter = MemoAdapter(memoList)
+        val adapter = MemoAdapter()
+        adapter.submitList(memoList)
 
 
         binding.btnAdd.setOnClickListener {
@@ -52,12 +53,15 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun observDeleteSignal(adapter:MemoAdapter){
-        sharedViewModel.deleteMemoId.observe(this){memoId->
-            memoId?.let {
+        sharedViewModel.deleteMemo.observe(this){memo->
+            memo?.let {
                 supportFragmentManager.popBackStack()
-                adapter.notifyItemRemoved(memoId)
-                memoList?.removeAt(memoId)
-                adapter.notifyDataSetChanged()
+
+                adapter.deleteMemo(memo)
+//
+//                adapter.notifyItemRemoved(memoId)
+//                memoList?.removeAt(memoId)
+//                adapter.notifyDataSetChanged()
             }
         }
     }

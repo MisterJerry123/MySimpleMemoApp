@@ -12,10 +12,10 @@ class MemoSharedViewModel: ViewModel() {
     fun updateMemo(memo:Memo){
         _resultMemo.value = memo
     }
-    private val _deleteMemoId = MutableLiveData<Int?>()
-    val deleteMemoId: LiveData<Int?> get() = _deleteMemoId
+    private val _deleteMemo = MutableLiveData<Memo?>()
+    val deleteMemo: LiveData<Memo?> get() = _deleteMemo
 
-    fun deleteMemo(idx:Int){
-        _deleteMemoId.value = idx
+    fun deleteMemo(memo: Memo){
+        _deleteMemo.value = memo
     }
 }
