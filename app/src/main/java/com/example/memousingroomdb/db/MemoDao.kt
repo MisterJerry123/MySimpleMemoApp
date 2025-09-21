@@ -12,7 +12,7 @@ interface MemoDao {
     fun insertMemo(memo:Memo)
 
     @Query("SELECT * From memo")
-    fun search():List<Memo>
+    fun search():MutableList<Memo>
 
     @Delete
     fun deleteMemo(memo:Memo)

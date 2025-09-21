@@ -3,15 +3,19 @@ package com.example.memousingroomdb
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.memousingroomdb.databinding.ActivityMainBinding
+import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoDatabase
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val sharedViewModel: MemoSharedViewModel by viewModels()
+    private var memoList : MutableList<Memo>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,11 +23,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val db = MemoDatabase.getInstance(this)
-        val memoActivity = AddMemoActivity()
-        val memoList = db?.memoDao()?.search()
+        memoList = db?.memoDao()?.search()
 
         val intent = Intent(this,AddMemoActivity::class.java)
         val adapter = MemoAdapter(memoList)
+
 
         binding.btnAdd.setOnClickListener {
             startActivity(intent)
@@ -34,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         adapter.setOnItemClickListener(object : MemoAdapter.OnItemClickListener{
             override fun onItemClick(view: View, pos: Int) {
-                val detailMemoFragment = DetailMemoFragment.newInstance(memoList!![pos])
+                val detailMemoFragment = DetailMemoFragment.newInstance(memoList!![pos],pos)
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.fcv,detailMemoFragment)
                 transaction.addToBackStack(null)
@@ -44,5 +48,17 @@ class MainActivity : AppCompatActivity() {
         })
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter=adapter
+        observDeleteSignal(adapter)
+
+    }
+    private fun observDeleteSignal(adapter:MemoAdapter){
+        sharedViewModel.deleteMemoId.observe(this){memoId->
+            memoId?.let {
+                supportFragmentManager.popBackStack()
+                adapter.notifyItemRemoved(memoId)
+                memoList?.removeAt(memoId)
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 }

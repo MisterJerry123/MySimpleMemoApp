@@ -73,6 +73,8 @@ class DetailMemoFragment : Fragment() {
 
         binding.btnMemoDelete.setOnClickListener {
             db?.memoDao()?.deleteMemo(memo!!)
+            val deleteIdx = arguments?.getInt("rcvIdx")
+            sharedViewModel.deleteMemo(deleteIdx!!)
             Toast.makeText(requireContext(), "메모가 지워졌어요", Toast.LENGTH_SHORT).show()
         }
 
@@ -86,10 +88,11 @@ class DetailMemoFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(memo: Memo): DetailMemoFragment {
+        fun newInstance(memo: Memo,recyclerViewIdx:Int): DetailMemoFragment {
             val fragment = DetailMemoFragment()
             val args = Bundle()
             args.putSerializable("clickedMemo", memo)
+            args.putInt("rcvIdx",recyclerViewIdx)
             fragment.arguments = args
             return fragment
         }
