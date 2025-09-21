@@ -24,7 +24,7 @@
         android:id="@+id/tv_memo_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAlignment="textEnd"
+        android:gravity="end"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
