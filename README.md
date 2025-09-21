@@ -6,14 +6,17 @@
 ## 주요 기능 설명
 ### 1️. 메모 저장 기능
 
-<img src="https://github.com/user-attachments/assets/e6c1ff71-477d-468d-87a5-48ca6dc924d5" width="200" height="400">
+<div align="center">
+<img src="https://github.com/user-attachments/assets/e6c1ff71-477d-468d-87a5-48ca6dc924d5" width="300" height="600">
+</div>
 
 * 기기 내부에 있는 Room Database를 이용하여 메모를 작성 및 저장하는 기능을 구현하였습니다.
 
 ### 2. 저장된 메모 수정 기능
 
-<img src="https://github.com/user-attachments/assets/e3244b92-dce9-4c2e-a6ff-a3bbc7352362" width="200" height="400">
-
+<div align="center">
+<img src="https://github.com/user-attachments/assets/e3244b92-dce9-4c2e-a6ff-a3bbc7352362" width="300" height="600">
+</div>
 
 * 저장된 메모를 수정하는 기능을 구현하였습니다.
 * 수정 시 메모의 작성일이 수정된 날짜로 변경되고 수정 즉시 Room DataBase에 반영됩니다.
@@ -23,8 +26,9 @@
 
 ### 3. 저장된 메모 제거 기능
 
-<img src="https://github.com/user-attachments/assets/1d554264-ca38-407c-8a7d-29ec5c339b42" width="200" height="400">
-
+<div align="center">
+<img src="https://github.com/user-attachments/assets/1d554264-ca38-407c-8a7d-29ec5c339b42" width="300" height="600">
+</div>
 
 * 저장된 메모를 제거하는 기능을 구현하였습니다.
 * 제거 시 해당 메모가 즉시 Room DataBase에서 제거되고 UI에 반영됩니다.
