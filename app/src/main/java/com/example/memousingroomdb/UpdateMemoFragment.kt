@@ -60,9 +60,16 @@ class UpdateMemoFragment : Fragment() {
                 content = binding.etContent.text.toString(),
                 cnt=memo.cnt
             )
-            db?.memoDao()?.updateMemo(newMemo)
-            sharedViewModel.updateMemo(newMemo)
-            requireActivity().supportFragmentManager.popBackStack()
+            if(memo.title == newMemo.title && memo.content == newMemo.content){
+                requireActivity().supportFragmentManager.popBackStack()
+
+            }
+            else{
+                db?.memoDao()?.updateMemo(newMemo)
+                sharedViewModel.updateMemo(newMemo)
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+
         }
     }
 
