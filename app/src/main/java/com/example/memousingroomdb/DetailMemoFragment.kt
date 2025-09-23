@@ -72,8 +72,9 @@ class DetailMemoFragment : Fragment() {
         }
 
         binding.btnMemoDelete.setOnClickListener {
-            db?.memoDao()?.deleteMemo(memo!!)
-            sharedViewModel.deleteMemo(memo!!)
+            //db?.memoDao()?.deleteMemo(memo!!)
+            //sharedViewModel.deleteMemo(memo!!)
+            sharedViewModel.delete(memo!!)
             Toast.makeText(requireContext(), "메모가 지워졌어요", Toast.LENGTH_SHORT).show()
         }
 

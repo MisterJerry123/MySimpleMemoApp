@@ -11,5 +11,5 @@ data class Memo(
     val title:String,
     val date:String,
     val content:String,
-    val cnt:Int?,
+    var cnt:Int?,
 ):Serializable
