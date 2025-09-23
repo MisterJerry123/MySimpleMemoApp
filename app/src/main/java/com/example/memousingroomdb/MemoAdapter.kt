@@ -1,5 +1,6 @@
 package com.example.memousingroomdb
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,13 +51,16 @@ class MemoAdapter:ListAdapter<Memo,RecyclerView.ViewHolder>(DiffUtilCallback()){
         fun bind(memo:Memo,pos:Int){
             binding.tvTitle.text=memo.title
             binding.tvDate.text=memo.date
-            binding.tvNumber.text=(pos+1).toString()
+            binding.tvNumber.text=memo.cnt.toString()
         }
     }
 
     fun deleteMemo(memo:Memo){
-        val newList = currentList.toMutableList()
-        newList.remove(memo)
+        val currentList = currentList.toMutableList()
+        currentList.remove(memo)
+        val newList = currentList.mapIndexed { index, item ->
+            item.copy(cnt = index + 1)
+        }
         submitList(newList)
     }
 

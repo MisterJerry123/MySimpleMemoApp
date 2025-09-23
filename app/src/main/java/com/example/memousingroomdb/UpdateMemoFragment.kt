@@ -57,7 +57,8 @@ class UpdateMemoFragment : Fragment() {
                 id = memo!!.id,
                 title = binding.etTitle.text.toString(),
                 date = "${LocalDate.now()} 수정됨",
-                content = binding.etContent.text.toString()
+                content = binding.etContent.text.toString(),
+                cnt=memo.cnt
             )
             db?.memoDao()?.updateMemo(newMemo)
             sharedViewModel.updateMemo(newMemo)

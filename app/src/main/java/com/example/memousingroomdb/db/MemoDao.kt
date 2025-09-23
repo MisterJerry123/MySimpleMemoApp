@@ -20,5 +20,6 @@ interface MemoDao {
     @Update
     fun updateMemo(memo:Memo)
 
-
+    @Query("SELECT COUNT(*) FROM memo")
+    fun getItemCount(): Int
 }
