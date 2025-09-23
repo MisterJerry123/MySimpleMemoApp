@@ -13,7 +13,7 @@ class MemoAdapter:ListAdapter<Memo,RecyclerView.ViewHolder>(DiffUtilCallback()){
     // {
 
     interface OnItemClickListener{
-        fun onItemClick(view: View, pos:Int)
+        fun onItemClick(memo: Memo)
     }
     private var listener : OnItemClickListener? =null
     private lateinit var itemClickListener : OnItemClickListener
@@ -30,14 +30,14 @@ class MemoAdapter:ListAdapter<Memo,RecyclerView.ViewHolder>(DiffUtilCallback()){
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val currentMemo = getItem(position)
 
         holder.itemView.setOnClickListener{
-            itemClickListener.onItemClick(it,position)
+            itemClickListener.onItemClick(currentMemo)
         }
 
         if(holder is MemoViewHolder){
-            val currentMemo = getItem(position) as Memo
-            holder.bind(currentMemo,position)
+            holder.bind(currentMemo)
         }
 
     }
@@ -48,7 +48,7 @@ class MemoAdapter:ListAdapter<Memo,RecyclerView.ViewHolder>(DiffUtilCallback()){
 //    }
 
     class MemoViewHolder(private val binding:ItemMemoBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(memo:Memo,pos:Int){
+        fun bind(memo:Memo){
             binding.tvTitle.text=memo.title
             binding.tvDate.text=memo.date
             binding.tvNumber.text=memo.cnt.toString()

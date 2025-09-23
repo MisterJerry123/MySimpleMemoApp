@@ -38,13 +38,12 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = binding.rcvMemo
 
         adapter.setOnItemClickListener(object : MemoAdapter.OnItemClickListener{
-            override fun onItemClick(view: View, pos: Int) {
-                val detailMemoFragment = DetailMemoFragment.newInstance(memoList!![pos],pos)
+            override fun onItemClick(memo: Memo) {
+                val detailMemoFragment = DetailMemoFragment.newInstance(memo)
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.fcv,detailMemoFragment)
                 transaction.addToBackStack(null)
                 transaction.commit()
-                //Toast.makeText(view.context, memoList?.get(pos)!!.content, Toast.LENGTH_SHORT).show()
             }
         })
         recyclerView.layoutManager = LinearLayoutManager(this)

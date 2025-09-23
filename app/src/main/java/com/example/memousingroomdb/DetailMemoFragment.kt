@@ -88,7 +88,7 @@ class DetailMemoFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(memo: Memo,recyclerViewIdx:Int): DetailMemoFragment {
+        fun newInstance(memo: Memo): DetailMemoFragment {
             val fragment = DetailMemoFragment()
             val args = Bundle()
             args.putSerializable("clickedMemo", memo)
