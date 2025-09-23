@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
         sharedViewModel.deleteMemo.observe(this){memo->
             memo?.let {
                 supportFragmentManager.popBackStack()
-
                 adapter.deleteMemo(memo)
 //
 //                adapter.notifyItemRemoved(memoId)
