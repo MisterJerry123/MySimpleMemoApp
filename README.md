@@ -1,7 +1,7 @@
 # Room DB 연습하다가 살을 붙힌 메모앱입니다.
 
 ## 사용한 기술 스택들
-```Kotlin```, ```MVVM```, ```ViewModel```, ```Room Database```, ```LiveData```, ```ListAdapter```, ```DiffUtil```
+```Kotlin```, ```MVVM```, ```ViewModel```, ```Room Database```, ```LiveData```, ```ListAdapter```, ```DiffUtil```, ```ItemTouchHelper```
 
 ## 주요 기능 설명
 ### 1️. 메모 저장 기능
@@ -34,3 +34,11 @@
 * 제거 시 해당 메모가 즉시 Room DataBase에서 제거되고 UI에 반영됩니다.
 * 실시간 데이터 관찰: 메인화면(MainActivity)은 ViewModel의 LiveData를 구독(observe)하여 메모 목록의 변경을 실시간으로 감지합니다.
 * 자동 UI 업데이트: Room DB에서 데이터가 삭제되면 LiveData가 새로운 목록을 발행(emit)하고, Observer가 이를 감지합니다. ListAdapter의 submitList에 새 목록이 전달되면 DiffUtil이 변경사항을 계산하여 UI를 효율적으로 갱신합니다.
+  
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/4b1f0600-a52b-4f02-a068-d45257a428f4" width="300" height="600">
+</div>
+
+* ItemTouchHelper를 도입하여, 사용자가 메인 화면의 RecyclerView에서 메모를 좌로 스와이프하는 직관적인 제스처로 아이템을 제거하는 기능을 구현하였습니다.
+
