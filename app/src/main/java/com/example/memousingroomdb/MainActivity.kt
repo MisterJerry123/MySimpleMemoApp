@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val sharedViewModel: MemoSharedViewModel by viewModels()
-    private var memoList : MutableList<Memo>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,11 +24,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val db = MemoDatabase.getInstance(this)
-        memoList = db?.memoDao()?.search()
 
         val intent = Intent(this,AddMemoActivity::class.java)
         val adapter = MemoAdapter()
-        adapter.submitList(memoList)
+
+        sharedViewModel.memoList.observe(this){memos->
+            adapter.submitList(memos)
+        }
+
 
 
         //
