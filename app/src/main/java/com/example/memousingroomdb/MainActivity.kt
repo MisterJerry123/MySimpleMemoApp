@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.memousingroomdb.databinding.ActivityMainBinding
 import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoDatabase
@@ -29,6 +31,31 @@ class MainActivity : AppCompatActivity() {
         val adapter = MemoAdapter()
         adapter.submitList(memoList)
 
+
+        //
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val memo = adapter.currentList[position]
+                // ViewModel에 삭제 요청
+                sharedViewModel.delete(memo)            }
+
+        }
+        //
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.rcvMemo)
 
         binding.btnAdd.setOnClickListener {
             startActivity(intent)
