@@ -12,8 +12,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MemoSharedViewModel(application: Application): AndroidViewModel(application) {
+
     lateinit var memoList :LiveData<List<Memo>>
     val db = MemoDatabase.getInstance(application)
+    val allMemos: LiveData<List<Memo>> = db?.memoDao()!!.getAllMemosAsLiveData()
+
     init {
         if (db != null) {
             memoList=db.memoDao().getAllMemosAsLiveData()
@@ -38,5 +41,9 @@ class MemoSharedViewModel(application: Application): AndroidViewModel(applicatio
     }
     private val _deleteMemo = MutableLiveData<Memo?>()
     val deleteMemo: LiveData<Memo?> get() = _deleteMemo
+
+    fun getMemos(memo:Memo): MutableList<Memo>? {
+        return db?.memoDao()?.search()
+    }
 
 }

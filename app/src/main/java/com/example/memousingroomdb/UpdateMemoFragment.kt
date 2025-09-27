@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.memousingroomdb.databinding.FragmentUpdateMemoBinding
@@ -49,7 +50,6 @@ class UpdateMemoFragment : Fragment() {
 
         binding.btnMemoCancel.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
-
         }
 
         binding.btnMemoUpdate.setOnClickListener {
@@ -58,18 +58,20 @@ class UpdateMemoFragment : Fragment() {
                 title = binding.etTitle.text.toString(),
                 date = "${LocalDate.now()} 수정됨",
                 content = binding.etContent.text.toString(),
-                cnt=memo.cnt
+                cnt = memo.cnt
             )
-            if(memo.title == newMemo.title && memo.content == newMemo.content){
+            if (memo.title == newMemo.title && memo.content == newMemo.content) {
                 requireActivity().supportFragmentManager.popBackStack()
 
-            }
-            else{
+            } else {
                 db?.memoDao()?.updateMemo(newMemo)
                 sharedViewModel.updateMemo(newMemo)
+                parentFragmentManager.setFragmentResult(
+                    "UpdateMemoFragment",
+                    bundleOf("IsUpdateMemoFragment" to true)
+                )
                 requireActivity().supportFragmentManager.popBackStack()
             }
-
         }
     }
 
@@ -82,6 +84,4 @@ class UpdateMemoFragment : Fragment() {
             return fragment
         }
     }
-
-
 }
