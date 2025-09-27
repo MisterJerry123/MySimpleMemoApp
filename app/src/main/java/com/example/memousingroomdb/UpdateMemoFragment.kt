@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -49,28 +50,57 @@ class UpdateMemoFragment : Fragment() {
         }
 
         binding.btnMemoCancel.setOnClickListener {
+
+            db?.memoDao()?.updateMemo(memo!!)
+            sharedViewModel.updateMemo(memo!!)
+            parentFragmentManager.setFragmentResult(
+                "UpdateMemoFragment",
+                bundleOf("IsUpdateMemoFragment" to true)
+            )
+
             requireActivity().supportFragmentManager.popBackStack()
         }
 
         binding.btnMemoUpdate.setOnClickListener {
-            val newMemo = Memo(
-                id = memo!!.id,
-                title = binding.etTitle.text.toString(),
-                date = "${LocalDate.now()} 수정됨",
-                content = binding.etContent.text.toString(),
-                cnt = memo.cnt
-            )
-            if (memo.title == newMemo.title && memo.content == newMemo.content) {
-                requireActivity().supportFragmentManager.popBackStack()
-
+            if (binding.etTitle.text.isBlank()) {
+                Toast.makeText(requireContext(), "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
             } else {
-                db?.memoDao()?.updateMemo(newMemo)
-                sharedViewModel.updateMemo(newMemo)
-                parentFragmentManager.setFragmentResult(
-                    "UpdateMemoFragment",
-                    bundleOf("IsUpdateMemoFragment" to true)
-                )
-                requireActivity().supportFragmentManager.popBackStack()
+
+                if (memo != null) {
+                    if (memo.title == binding.etTitle.text.toString() && memo.content == binding.etContent.text.toString()) {
+                        val newMemo = Memo(
+                            id = memo.id,
+                            title = binding.etTitle.text.toString(),
+                            date = memo.date,
+                            content = binding.etContent.text.toString(),
+                            cnt = memo.cnt
+                        )
+                        db?.memoDao()?.updateMemo(newMemo)
+                        sharedViewModel.updateMemo(newMemo)
+                        parentFragmentManager.setFragmentResult(
+                            "UpdateMemoFragment",
+                            bundleOf("IsUpdateMemoFragment" to true)
+                        )
+                        requireActivity().supportFragmentManager.popBackStack()
+
+                    } else {
+                        val newMemo = Memo(
+                            id = memo!!.id,
+                            title = binding.etTitle.text.toString(),
+                            date = "${LocalDate.now()} 수정됨",
+                            content = binding.etContent.text.toString(),
+                            cnt = memo.cnt
+                        )
+
+                        db?.memoDao()?.updateMemo(newMemo)
+                        sharedViewModel.updateMemo(newMemo)
+                        parentFragmentManager.setFragmentResult(
+                            "UpdateMemoFragment",
+                            bundleOf("IsUpdateMemoFragment" to true)
+                        )
+                        requireActivity().supportFragmentManager.popBackStack()
+                    }
+                }
             }
         }
     }
