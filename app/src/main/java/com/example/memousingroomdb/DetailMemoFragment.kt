@@ -23,7 +23,7 @@ class DetailMemoFragment : Fragment() {
 
     private var _binding: FragmentDetailMemoBinding? = null
     private val binding get() = _binding!!
-    var memo: Memo? = null
+    private var memo: Memo? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,28 +37,31 @@ class DetailMemoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val db = MemoDatabase.getInstance(requireContext())
-        sharedViewModel.resultMemo.observe(viewLifecycleOwner) { result ->
+        parentFragmentManager.setFragmentResultListener(
+            "UpdateMemoFragment",
+            this
+        ) { requestKey, bundle ->
+            val isFromUpdateMemoFragment = bundle.getBoolean("IsUpdateMemoFragment")
+            if (isFromUpdateMemoFragment) {
+                sharedViewModel.resultMemo.observe(viewLifecycleOwner) { result ->
 
-            binding.tvMemoTitle.text = result.title
-            binding.tvMemoDate.text = result.date
-            if (result.content.isBlank()) {
-                binding.tvMemoContent.text = "내용이 없습니다."
-            } else {
-                binding.tvMemoContent.text = result.content
+                    binding.tvMemoTitle.text = result.title
+                    binding.tvMemoDate.text = result.date
+                    if (result.content.isBlank()) {
+                        binding.tvMemoContent.text = "내용이 없습니다."
+                    } else {
+                        binding.tvMemoContent.text = result.content
+                    }
+                    memo = result
+
+                }
             }
-            memo = result
-
         }
-
-
-
         memo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getSerializable("clickedMemo", Memo::class.java)
         } else {
             arguments?.getSerializable("clickedMemo") as? Memo
         }
-
 
         if (memo != null) {
             binding.tvMemoTitle.text = memo!!.title
@@ -74,16 +77,13 @@ class DetailMemoFragment : Fragment() {
             sharedViewModel.delete(memo!!)
             Toast.makeText(requireContext(), "메모가 지워졌어요", Toast.LENGTH_SHORT).show()
         }
-
         binding.btnMemoUpdate.setOnClickListener {
             val transaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.fcv, UpdateMemoFragment.newInstance(memo!!))
             transaction.addToBackStack(null)
             transaction.commit()
         }
-
     }
-
     companion object {
         fun newInstance(memo: Memo): DetailMemoFragment {
             val fragment = DetailMemoFragment()
@@ -93,6 +93,4 @@ class DetailMemoFragment : Fragment() {
             return fragment
         }
     }
-
-
 }
