@@ -47,7 +47,7 @@ class DetailMemoFragment : Fragment() {
 
                     binding.tvMemoTitle.text = result.title
                     binding.tvMemoDate.text = result.date
-                    if (result.content.isBlank()) {
+                    if (result.content.isEmpty()) {
                         binding.tvMemoContent.text = "내용이 없습니다."
                     } else {
                         binding.tvMemoContent.text = result.content
@@ -66,7 +66,7 @@ class DetailMemoFragment : Fragment() {
         if (memo != null) {
             binding.tvMemoTitle.text = memo!!.title
             binding.tvMemoDate.text = memo!!.date
-            if (memo!!.content.isBlank()) {
+            if (memo!!.content.isEmpty()) {
                 binding.tvMemoContent.text = "내용이 없습니다."
             } else {
                 binding.tvMemoContent.text = memo!!.content
