@@ -16,7 +16,7 @@
 ### 2. 저장된 메모 수정 기능
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/e3244b92-dce9-4c2e-a6ff-a3bbc7352362" width="300" height="600">
+<img src="https://github.com/user-attachments/assets/35091eb5-3190-4ab0-b8a1-b420fb9e436a" width="300" height="600">
 </div>
 
 * 저장된 메모를 수정하는 기능을 구현하였습니다.
