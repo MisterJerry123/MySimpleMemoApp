@@ -25,6 +25,13 @@ class MainActivity : AppCompatActivity() {
         val adapter = MemoAdapter()
         sharedViewModel.memoList.observe(this) { memos ->
             adapter.submitList(memos)
+            if (memos.isEmpty()) {
+                binding.rcvMemo.visibility = View.INVISIBLE
+                binding.tvMemoEmptyMsg.visibility = View.VISIBLE
+            } else {
+                binding.rcvMemo.visibility = View.VISIBLE
+                binding.tvMemoEmptyMsg.visibility = View.INVISIBLE
+            }
         }
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
