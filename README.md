@@ -7,8 +7,9 @@
 ### 1️. 메모 저장 기능
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/e6c1ff71-477d-468d-87a5-48ca6dc924d5" width="300" height="600">
+<img src="https://github.com/user-attachments/assets/755c22f3-2a92-4bd9-a8cd-fc199a7fd1f6" width="300" height="600">
 </div>
+
 
 * 기기 내부에 있는 Room Database를 이용하여 메모를 작성 및 저장하는 기능을 구현하였습니다.
 
