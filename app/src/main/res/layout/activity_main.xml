@@ -73,6 +73,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/flo_top"
         app:layout_constraintVertical_weight="9" />
+    <TextView
+        android:id="@+id/tv_memo_empty_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="저장된 메모가 없습니다."
+        android:textSize="25sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_add"
