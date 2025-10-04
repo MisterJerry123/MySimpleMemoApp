@@ -26,10 +26,13 @@ class MainActivity : AppCompatActivity() {
         sharedViewModel.memoList.observe(this) { memos ->
             adapter.submitList(memos)
             if (memos.isEmpty()) {
+                binding.floTop.visibility = View.INVISIBLE
                 binding.rcvMemo.visibility = View.INVISIBLE
                 binding.tvMemoEmptyMsg.visibility = View.VISIBLE
             } else {
                 binding.rcvMemo.visibility = View.VISIBLE
+                binding.floTop.visibility = View.VISIBLE
+
                 binding.tvMemoEmptyMsg.visibility = View.INVISIBLE
             }
         }
