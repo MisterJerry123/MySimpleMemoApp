@@ -7,15 +7,16 @@
 ### 1️. 메모 저장 기능
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/e6c1ff71-477d-468d-87a5-48ca6dc924d5" width="300" height="600">
+<img src="https://github.com/user-attachments/assets/755c22f3-2a92-4bd9-a8cd-fc199a7fd1f6" width="300" height="600">
 </div>
+
 
 * 기기 내부에 있는 Room Database를 이용하여 메모를 작성 및 저장하는 기능을 구현하였습니다.
 
 ### 2. 저장된 메모 수정 기능
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/e3244b92-dce9-4c2e-a6ff-a3bbc7352362" width="300" height="600">
+<img src="https://github.com/user-attachments/assets/35091eb5-3190-4ab0-b8a1-b420fb9e436a" width="300" height="600">
 </div>
 
 * 저장된 메모를 수정하는 기능을 구현하였습니다.
@@ -42,3 +43,11 @@
 
 * ItemTouchHelper를 도입하여, 사용자가 메인 화면의 RecyclerView에서 메모를 좌로 스와이프하는 직관적인 제스처로 아이템을 제거하는 기능을 구현하였습니다.
 
+***
+### 추후 도입 예정인 것들
+
+1. 정렬기능 - 메인화면에서 순번, 제목, 작성일 클릭시 정렬되게
+2. 페이징 기능 - 메모가 많아질 경우 로드하는데 오래걸리므로 페이징을 통해 처리
+3. compose ui로 레펙토링
+4. 카톡 로그인(?) - 필요하진 않지만 그냥 연습용
+5. 기기에 저장된 메모 외부 db에 저장 및 로드 기능 - 내가 할 수 있으려나 모르겠다
