@@ -48,8 +48,17 @@
 <div align="center">
 <img src="https://github.com/user-attachments/assets/0bbd63d3-21e8-44f7-8c54-162381140bdd" width="300" height="600">
 </div>
+<div align="center">
+  <img width="1059" height="580" alt="image" src="https://github.com/user-attachments/assets/09abb548-02ef-40e0-88e6-0cbeaa460e1a" />
+  ▲Firebase에 저장된 메모 목록들
+</div>
+
+
+
 
 * Firebase를 활용하여 저장된 메모를 불러오는 기능 및 기기에 저장된 메모를 Firebase로 저장하는 기능을 구현하였습니다.
+
+
 
 
 ***
