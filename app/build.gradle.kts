@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
 
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
+
+
 
 }
 
@@ -58,4 +62,17 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //firebase관련
+
+    // Import the Firebase BoM
+    implementation(platform(libs.firebase.bom))
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation(libs.firebase.analytics)
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+
+    implementation(libs.firebase.firestore) // 클라우드 Firestore 데이터베이스
+
 }

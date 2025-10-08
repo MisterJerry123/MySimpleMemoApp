@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
@@ -28,6 +29,21 @@ interface MemoDao {
 
     @Query("SELECT COUNT(*) FROM memo")
     fun getItemCount(): Int
+
+    @Query("DELETE FROM memo")
+    fun deleteAllMemo()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllMemos(memos: List<Memo>)
+
+    @Transaction
+    fun replaceAllMemos(newMemoList: List<Memo>) {
+        // 1단계: 테이블의 모든 데이터를 삭제
+        deleteAllMemo()
+
+        // 2단계: 전달받은 새로운 리스트 전체를 삽입
+        insertAllMemos(newMemoList)
+    }
 
 
     @Transaction

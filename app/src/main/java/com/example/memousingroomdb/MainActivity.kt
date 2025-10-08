@@ -1,9 +1,11 @@
 package com.example.memousingroomdb
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -11,6 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memousingroomdb.databinding.ActivityMainBinding
 import com.example.memousingroomdb.db.Memo
+import com.example.memousingroomdb.db.MemoList
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +42,32 @@ class MainActivity : AppCompatActivity() {
                 binding.tvMemoEmptyMsg.visibility = View.INVISIBLE
             }
         }
+
+        binding.btnLoad.setOnClickListener {
+            //load
+            Firebase.firestore.collection("memo").document("savedMemo")
+                .get()
+                .addOnSuccessListener { result -> // 성공 시 'result'는 QuerySnapshot 객체입니다.
+
+                    val wrapper = result.toObject(MemoList::class.java)
+                    Log.d(TAG, "loadedMemo_wrapper:$wrapper")
+
+                    val loadedMemo = wrapper?.value ?: emptyList()
+                    Log.d(TAG, "loadedMemo:$loadedMemo")
+
+                    sharedViewModel.changeMemo(loadedMemo)
+                    Toast.makeText(this, "저장된 메모를 성공적으로 불러왔습니다. ", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents.", exception)
+                }
+        }
+        binding.btnSave.setOnClickListener {
+            sharedViewModel.saveMemo()
+            Toast.makeText(this, "메모가 성공적으로 저장되었습니다. ", Toast.LENGTH_SHORT).show()
+
+        }
+
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT

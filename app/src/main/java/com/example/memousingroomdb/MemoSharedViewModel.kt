@@ -1,6 +1,7 @@
 package com.example.memousingroomdb
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,12 +9,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoDatabase
+import com.example.memousingroomdb.db.MemoList
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MemoSharedViewModel(application: Application): AndroidViewModel(application) {
 
     lateinit var memoList :LiveData<List<Memo>>
+    private val fb = Firebase.firestore
+
+
     val db = MemoDatabase.getInstance(application)
     val allMemos: LiveData<List<Memo>> = db?.memoDao()!!.getAllMemosAsLiveData()
 
@@ -30,6 +37,26 @@ class MemoSharedViewModel(application: Application): AndroidViewModel(applicatio
             db?.memoDao()?.deleteAndReorderMemos(memo)
             _deleteMemo.postValue(memo)
 
+        }
+    }
+    fun changeMemo(memo:List<Memo>){
+        viewModelScope.launch {
+            db?.memoDao()?.replaceAllMemos(memo)
+        }
+    }
+    fun saveMemo(){
+        viewModelScope.launch(Dispatchers.IO) {
+            // "memos" 컬렉션에 새로운 문서를 추가하고 memo 객체의 데이터를 저장
+            fb.collection("memo").document("savedMemo")
+                .set(memoList)
+                .addOnSuccessListener { documentReference ->
+                    // 저장 성공 시
+                    Log.d("FIRESTORE_SUCCESS", "새로운 메모 저장 성공!")
+                }
+                .addOnFailureListener { e ->
+                    // 저장 실패 시
+                    Log.w("FIRESTORE_ERROR", "메모 저장 실패", e)
+                }
         }
     }
 
