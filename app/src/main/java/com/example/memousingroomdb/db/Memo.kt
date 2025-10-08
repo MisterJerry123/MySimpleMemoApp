@@ -8,8 +8,12 @@ import java.io.Serializable
 data class Memo(
     @PrimaryKey(autoGenerate = true)
     val id:Int=0,
-    val title:String,
-    val date:String,
-    val content:String,
-    var cnt:Int?,
+    val title:String="",
+    val date:String="",
+    val content:String="",
+    var cnt:Int?=1,
 ):Serializable
+
+data class MemoList(
+    val value:List<Memo> = listOf()
+)
