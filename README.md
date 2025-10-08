@@ -43,6 +43,14 @@
 
 * ItemTouchHelper를 도입하여, 사용자가 메인 화면의 RecyclerView에서 메모를 좌로 스와이프하는 직관적인 제스처로 아이템을 제거하는 기능을 구현하였습니다.
 
+### 4. 저장된 메모 불러오기 기능
+<div align="center">
+<img src="https://github.com/user-attachments/assets/e3f51450-9067-4b60-90c2-461f5256f995" width="300" height="600">
+</div>
+
+* Firebase를 활용하여 저장된 메모를 불러오는 기능을 구현하였습니다.
+
+
 ***
 ### 추후 도입 예정인 것들
 
