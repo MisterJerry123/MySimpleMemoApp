@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="50dp"
+    tools:context=".LoginActivity">
+    <EditText
+        android:id="@+id/et_id"
+        android:hint="이메일"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/et_pw"
+        android:hint="비밀번호"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/et_id"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_signup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:text="회원가입"
+        app:layout_constraintTop_toBottomOf="@id/et_pw"
+        app:layout_constraintStart_toStartOf="@id/et_pw"
+        app:layout_constraintEnd_toStartOf="@id/btn_login"
+
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="로그인"
+        app:layout_constraintTop_toBottomOf="@id/et_pw"
+        app:layout_constraintEnd_toEndOf="@id/et_pw"
+        app:layout_constraintStart_toEndOf="@id/btn_signup"
+        />
+    <TextView
+        android:id="@+id/tv_without_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_signup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="회원가입 없이 이용하기"
+        android:gravity="center"
+        android:padding="10dp"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
