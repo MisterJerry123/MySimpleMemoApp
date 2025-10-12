@@ -1,6 +1,7 @@
 package com.example.memousingroomdb
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.example.memousingroomdb.databinding.ActivityMainBinding
 import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoList
 import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 
 
@@ -27,6 +29,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val currentUserId = Firebase.auth.currentUser?.uid
+
+        try {
+            if(currentUserId!=null){
+                checkUserAndInitRoom(currentUserId)
+            }
+            else{
+                throw IllegalStateException("FB로부터 uid를 수신받지 못함")
+            }
+        }catch (e: IllegalStateException){
+            Log.e("AUTH_CHECK", "오류 발생: ${e.message}")
+        }
+
+
+
+
         val intent = Intent(this, AddMemoActivity::class.java)
         val adapter = MemoAdapter()
         sharedViewModel.memoList.observe(this) { memos ->
@@ -44,27 +62,41 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnLoad.setOnClickListener {
-            //load
-            Firebase.firestore.collection("memo").document("savedMemo")
-                .get()
-                .addOnSuccessListener { result -> // 성공 시 'result'는 QuerySnapshot 객체입니다.
 
-                    val wrapper = result.toObject(MemoList::class.java)
-                    Log.d(TAG, "loadedMemo_wrapper:$wrapper")
+            if(currentUserId!=null){
+                //load
+                Firebase.firestore.collection("memo").document(currentUserId)
+                    .get()
+                    .addOnSuccessListener { result -> // 성공 시 'result'는 QuerySnapshot 객체입니다.
 
-                    val loadedMemo = wrapper?.value ?: emptyList()
-                    Log.d(TAG, "loadedMemo:$loadedMemo")
+                        val wrapper = result.toObject(MemoList::class.java)
+                        Log.d(TAG, "loadedMemo_wrapper:$wrapper")
 
-                    sharedViewModel.changeMemo(loadedMemo)
-                    Toast.makeText(this, "저장된 메모를 성공적으로 불러왔습니다. ", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents.", exception)
-                }
+                        val loadedMemo = wrapper?.value ?: emptyList()
+                        Log.d(TAG, "loadedMemo:$loadedMemo")
+
+                        sharedViewModel.changeMemo(loadedMemo)
+                        Toast.makeText(this, "저장된 메모를 성공적으로 불러왔습니다. ", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents.", exception)
+                    }
+            }
+            else{
+                Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
+            }
+
+
         }
         binding.btnSave.setOnClickListener {
-            sharedViewModel.saveMemo()
-            Toast.makeText(this, "메모가 성공적으로 저장되었습니다. ", Toast.LENGTH_SHORT).show()
+            if(currentUserId!=null){
+                sharedViewModel.saveMemo(currentUserId)
+                Toast.makeText(this, "메모가 성공적으로 저장되었습니다. ", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
+
+            }
 
         }
 
@@ -121,6 +153,18 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.popBackStack()
                 adapter.deleteMemo(memo)
             }
+        }
+    }
+    private fun checkUserAndInitRoom(currentUserId:String) {//이전 사용자랑 비교 함수
+        val prefs = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val lastUserIdKey = "last_user_id"
+        val lastUserId = prefs.getString(lastUserIdKey, null)
+
+        if (currentUserId != null && lastUserId != currentUserId) {
+            sharedViewModel.deleteAllMemo()
+        }
+        if (currentUserId != null) {
+            prefs.edit().putString(lastUserIdKey, currentUserId).apply()
         }
     }
 }
