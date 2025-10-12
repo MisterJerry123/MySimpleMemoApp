@@ -1,7 +1,7 @@
 # Room DB 연습하다가 살을 붙힌 메모앱입니다.
 
 ## 사용한 기술 스택들
-```Kotlin```, ```MVVM```, ```ViewModel```, ```Room Database```, ```LiveData```, ```ListAdapter```, ```DiffUtil```, ```ItemTouchHelper```, ```JUnit4```, ```Espresso```, ```Firebase```
+```Kotlin```, ```MVVM```, ```ViewModel```, ```Room Database```, ```LiveData```, ```ListAdapter```, ```DiffUtil```, ```ItemTouchHelper```, ```JUnit4```, ```Espresso```, ```Sharedpreference```,  ```Firebase Firestore```, ```Firebase Authentication```
 
 ## 주요 기능 설명
 ### 1️. 메모 저장 기능
@@ -57,6 +57,9 @@
 
 
 * Firebase를 활용하여 저장된 메모를 불러오는 기능 및 기기에 저장된 메모를 Firebase로 저장하는 기능을 구현하였습니다.
+
+
+### 5. 로그인 기능 및 유저별로 각자의 메모 저장 및 로드 기능
 
 
 
