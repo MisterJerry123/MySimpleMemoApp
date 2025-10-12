@@ -1,28 +1,20 @@
 [versions]
-agp = "8.9.3"
+agp = "8.13.0"
 firebaseAuth = "24.0.1"
-firebaseBom = "34.4.0"
-firebaseBomVersion = "33.1.0"
 fragmentKtx = "1.8.9"
-googleFirebaseBom = "33.1.0"
 googleFirebaseBomVersion = "34.4.0"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 appcompat = "1.7.1"
-kotlinxDatetime = "0.4.0"
 material = "1.13.0"
 activity = "1.11.0"
 constraintlayout = "2.2.1"
 playServicesAuth = "21.4.0"
 roomCompiler = "2.8.2"
 roomRuntime = "2.8.2"
-firebaseCommonKtx = "22.0.1"
-firebaseFirestoreKtx = "26.0.1"
-firebaseAuthKtx = "24.0.1"
-firebaseAuthKtxVersion = "24.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,7 +34,6 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
-firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtxVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
