@@ -172,7 +172,6 @@ class MainActivity : AppCompatActivity() {
         val lastUserId = prefs.getString(lastUserIdKey, null)
 
         if (currentUserId != null && lastUserId != currentUserId) {
-
             sharedViewModel.deleteAllMemo()
         }
         if (currentUserId != null) {

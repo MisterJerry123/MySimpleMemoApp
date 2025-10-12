@@ -1,7 +1,9 @@
 package com.example.memousingroomdb
 
 import android.app.Application
+import android.content.ContentValues.TAG
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +13,7 @@ import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoDatabase
 import com.example.memousingroomdb.db.MemoList
 import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +22,7 @@ class MemoSharedViewModel(application: Application): AndroidViewModel(applicatio
 
     lateinit var memoList :LiveData<List<Memo>>
     private val fb = Firebase.firestore
+    private val currentUserId = Firebase.auth.currentUser?.uid
 
 
     val db = MemoDatabase.getInstance(application)
@@ -26,6 +30,35 @@ class MemoSharedViewModel(application: Application): AndroidViewModel(applicatio
 
     init {
         if (db != null) {
+            //firestore->db->livedata
+            //db.memoDao().deleteAllMemo()
+            if(currentUserId!=null){
+                Firebase.firestore.collection("memo").document(currentUserId)
+                    .get()
+                    .addOnSuccessListener { result -> // 성공 시 'result'는 QuerySnapshot 객체입니다.
+
+                        val wrapper = result.toObject(MemoList::class.java)
+                        Log.d(TAG, "loadedMemo_wrapper:$wrapper")
+
+                        val loadedMemo = wrapper?.value ?: emptyList()
+                        Log.d(TAG, "loadedMemo:$loadedMemo")
+
+                        db.memoDao().insertAllMemos(loadedMemo)
+                        /*
+                        for(i in 0 until loadedMemo.size){
+                            db.memoDao().insertMemo(loadedMemo[i])
+
+                        }
+                        */
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents.", exception)
+                    }
+            }
+
+
+            //
+
             memoList=db.memoDao().getAllMemosAsLiveData()
         }
 
