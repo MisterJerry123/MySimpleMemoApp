@@ -25,11 +25,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val sharedViewModel: MemoSharedViewModel by viewModels()
 
+    private val currentUserId = Firebase.auth.currentUser?.uid
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val currentUserId = Firebase.auth.currentUser?.uid
 
         try {
             if(currentUserId!=null){
@@ -95,9 +96,7 @@ class MainActivity : AppCompatActivity() {
             }
             else{
                 Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
-
             }
-
         }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
@@ -147,6 +146,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        if(currentUserId!=null){
+            sharedViewModel.saveMemo(currentUserId)
+
+        }
+        else{
+            //TODO null 일때 오류
+        }
+
+    }
+
     private fun observDeleteSignal(adapter: MemoAdapter) {
         sharedViewModel.deleteMemo.observe(this) { memo ->
             memo?.let {
@@ -165,6 +176,16 @@ class MainActivity : AppCompatActivity() {
         }
         if (currentUserId != null) {
             prefs.edit().putString(lastUserIdKey, currentUserId).apply()
+        }
+    }
+
+    private fun saveBeforeExit(){
+        val prefs = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val lastUserIdKey = "last_user_id"
+        val lastUserId = prefs.getString(lastUserIdKey, null)
+        if(lastUserId!=null){
+            sharedViewModel.saveMemo(lastUserId)
+
         }
     }
 }
