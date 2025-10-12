@@ -39,15 +39,21 @@ class MemoSharedViewModel(application: Application): AndroidViewModel(applicatio
 
         }
     }
+
+    fun deleteAllMemo(){
+        viewModelScope.launch {
+            db?.memoDao()?.deleteAllMemo()
+        }
+    }
     fun changeMemo(memo:List<Memo>){
         viewModelScope.launch {
             db?.memoDao()?.replaceAllMemos(memo)
         }
     }
-    fun saveMemo(){
+    fun saveMemo(uid:String){
         viewModelScope.launch(Dispatchers.IO) {
             // "memos" 컬렉션에 새로운 문서를 추가하고 memo 객체의 데이터를 저장
-            fb.collection("memo").document("savedMemo")
+            fb.collection("memo").document(uid)
                 .set(memoList)
                 .addOnSuccessListener { documentReference ->
                     // 저장 성공 시

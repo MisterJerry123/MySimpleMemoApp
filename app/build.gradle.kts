@@ -12,7 +12,7 @@ plugins {
 
 android {
     namespace = "com.example.memousingroomdb"
-    compileSdk = 35
+    compileSdk = 36
     buildFeatures{
         viewBinding = true
     }
@@ -54,6 +54,8 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.constraintlayout)
+
     ksp(libs.androidx.room.compiler.v250)
 
     //activityViewModels
@@ -74,5 +76,11 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
 
     implementation(libs.firebase.firestore) // 클라우드 Firestore 데이터베이스
+
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth) //google 로그인
+
+
+
 
 }
