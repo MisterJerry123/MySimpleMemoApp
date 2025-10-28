@@ -15,6 +15,7 @@ android {
     compileSdk = 36
     buildFeatures{
         viewBinding = true
+        buildConfig=true
     }
 
     defaultConfig {
@@ -79,6 +80,10 @@ dependencies {
 
     implementation(libs.firebase.auth)
     implementation(libs.play.services.auth) //google 로그인
+
+    //admob관련
+    implementation(libs.play.services.ads)
+
 
 
 
