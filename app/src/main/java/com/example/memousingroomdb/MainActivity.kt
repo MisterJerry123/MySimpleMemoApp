@@ -15,6 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.memousingroomdb.databinding.ActivityMainBinding
 import com.example.memousingroomdb.db.Memo
 import com.example.memousingroomdb.db.MemoList
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -23,27 +28,43 @@ import com.google.firebase.firestore.firestore
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
     private val sharedViewModel: MemoSharedViewModel by viewModels()
 
     private val currentUserId = Firebase.auth.currentUser?.uid
+    private var interstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        try {
-            if(currentUserId!=null){
-                checkUserAndInitRoom(currentUserId)
+        //광고초기화
+        MobileAds.initialize(this) { initializationStatus ->
+            // 초기화가 완료되었을 때 실행되는 콜백입니다.
+            val statusMap = initializationStatus.adapterStatusMap
+            for (adapterStatus in statusMap.values) {
+                Log.d(
+                    "AdMob",
+                    "Adapter ${adapterStatus.description}: ${adapterStatus.initializationState}"
+                )
             }
-            else{
-                throw IllegalStateException("FB로부터 uid를 수신받지 못함")
-            }
-        }catch (e: IllegalStateException){
-            Log.e("AUTH_CHECK", "오류 발생: ${e.message}")
+            Log.d("AdMob", "Initialization complete.")
         }
 
+        //광고 로드
+        loadAdd()
 
+
+        try {
+            if (currentUserId != null) {
+                checkUserAndInitRoom(currentUserId)
+            } else {
+                throw IllegalStateException("FB로부터 uid를 수신받지 못함")
+            }
+        } catch (e: IllegalStateException) {
+            Log.e("AUTH_CHECK", "오류 발생: ${e.message}")
+        }
 
 
         val intent = Intent(this, AddMemoActivity::class.java)
@@ -64,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnLoad.setOnClickListener {
 
-            if(currentUserId!=null){
+            if (currentUserId != null) {
                 //load
                 Firebase.firestore.collection("memo").document(currentUserId)
                     .get()
@@ -82,21 +103,22 @@ class MainActivity : AppCompatActivity() {
                     .addOnFailureListener { exception ->
                         Log.w(TAG, "Error getting documents.", exception)
                     }
-            }
-            else{
+            } else {
                 Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
             }
 
+            interstitialAd?.show(this)
 
         }
         binding.btnSave.setOnClickListener {
-            if(currentUserId!=null){
+            if (currentUserId != null) {
                 sharedViewModel.saveMemo(currentUserId)
                 Toast.makeText(this, "메모가 성공적으로 저장되었습니다. ", Toast.LENGTH_SHORT).show()
-            }
-            else{
+            } else {
                 Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
             }
+            interstitialAd?.show(this)
+
         }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
@@ -148,11 +170,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if(currentUserId!=null){
+        if (currentUserId != null) {
             sharedViewModel.saveMemo(currentUserId)
 
-        }
-        else{
+        } else {
             //TODO null 일때 오류
         }
 
@@ -166,7 +187,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    private fun checkUserAndInitRoom(currentUserId:String) {//이전 사용자랑 비교 함수
+
+    private fun checkUserAndInitRoom(currentUserId: String) {//이전 사용자랑 비교 함수
         val prefs = getSharedPreferences("user_session", Context.MODE_PRIVATE)
         val lastUserIdKey = "last_user_id"
         val lastUserId = prefs.getString(lastUserIdKey, null)
@@ -179,13 +201,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveBeforeExit(){
+    private fun saveBeforeExit() {
         val prefs = getSharedPreferences("user_session", Context.MODE_PRIVATE)
         val lastUserIdKey = "last_user_id"
         val lastUserId = prefs.getString(lastUserIdKey, null)
-        if(lastUserId!=null){
+        if (lastUserId != null) {
             sharedViewModel.saveMemo(lastUserId)
 
         }
+    }
+
+    private fun loadAdd() {
+        InterstitialAd.load(
+            this,
+            BuildConfig.ADDMOB_TASKCOMPLETEADV_UNIT_ID,
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    Log.d(TAG, "Ad was loaded.")
+                    interstitialAd = ad
+                }
+
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d(TAG, adError.message)
+                    interstitialAd = null
+                }
+            },
+        )
     }
 }
