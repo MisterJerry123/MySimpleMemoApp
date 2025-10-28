@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,15 +9,14 @@ plugins {
     id("com.google.gms.google-services")
 
 
-
 }
 
 android {
     namespace = "com.example.memousingroomdb"
     compileSdk = 36
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
-        buildConfig=true
+        buildConfig = true
     }
 
     defaultConfig {
@@ -24,7 +25,15 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
+        val properties = Properties().apply {
+            load(rootProject.file("local.properties").inputStream())
+        }
+        buildConfigField(
+            "String",
+            "ADDMOB_TASKCOMPLETEADV_UNIT_ID",
+            properties["TaskCompleteAdv_UnitID"].toString()
+        )
+        manifestPlaceholders["ADDMOB_APPID"] = properties["AddMob_AppID"].toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -83,9 +92,6 @@ dependencies {
 
     //admob관련
     implementation(libs.play.services.ads)
-
-
-
 
 
 }
