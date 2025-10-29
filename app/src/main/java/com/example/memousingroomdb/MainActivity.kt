@@ -38,20 +38,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val prefs = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val isLogin = prefs.getBoolean("isLoginUser", false)
+
 
         //광고초기화
-        MobileAds.initialize(this) { initializationStatus ->
-            // 초기화가 완료되었을 때 실행되는 콜백입니다.
-            val statusMap = initializationStatus.adapterStatusMap
-            for (adapterStatus in statusMap.values) {
-                Log.d(
-                    "AdMob",
-                    "Adapter ${adapterStatus.description}: ${adapterStatus.initializationState}"
-                )
-            }
-            Log.d("AdMob", "Initialization complete.")
-        }
-
+        initadv()
         //광고 로드
         loadAdd()
 
@@ -84,40 +76,51 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnLoad.setOnClickListener {
-
-            if (currentUserId != null) {
-                //load
-                Firebase.firestore.collection("memo").document(currentUserId)
-                    .get()
-                    .addOnSuccessListener { result -> // 성공 시 'result'는 QuerySnapshot 객체입니다.
-
-                        val wrapper = result.toObject(MemoList::class.java)
-                        Log.d(TAG, "loadedMemo_wrapper:$wrapper")
-
-                        val loadedMemo = wrapper?.value ?: emptyList()
-                        Log.d(TAG, "loadedMemo:$loadedMemo")
-
-                        sharedViewModel.changeMemo(loadedMemo)
-                        Toast.makeText(this, "저장된 메모를 성공적으로 불러왔습니다. ", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(TAG, "Error getting documents.", exception)
-                    }
+            if (isLogin == false) {
+                Toast.makeText(this, "비회원은 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
+                if (currentUserId != null) {
+                    //load
+                    Firebase.firestore.collection("memo").document(currentUserId)
+                        .get()
+                        .addOnSuccessListener { result -> // 성공 시 'result'는 QuerySnapshot 객체입니다.
+
+                            val wrapper = result.toObject(MemoList::class.java)
+                            Log.d(TAG, "loadedMemo_wrapper:$wrapper")
+
+                            val loadedMemo = wrapper?.value ?: emptyList()
+                            Log.d(TAG, "loadedMemo:$loadedMemo")
+
+                            sharedViewModel.changeMemo(loadedMemo)
+                            Toast.makeText(this, "저장된 메모를 성공적으로 불러왔습니다. ", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.w(TAG, "Error getting documents.", exception)
+                        }
+                } else {
+                    Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
+                }
+
+                interstitialAd?.show(this)
+
             }
 
-            interstitialAd?.show(this)
 
         }
         binding.btnSave.setOnClickListener {
-            if (currentUserId != null) {
-                sharedViewModel.saveMemo(currentUserId)
-                Toast.makeText(this, "메모가 성공적으로 저장되었습니다. ", Toast.LENGTH_SHORT).show()
+            if (isLogin == false) {
+                Toast.makeText(this, "비회원은 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
+
+                if (currentUserId != null) {
+                    sharedViewModel.saveMemo(currentUserId)
+                    Toast.makeText(this, "메모가 성공적으로 저장되었습니다. ", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "UID값이 NULL입니다. ", Toast.LENGTH_SHORT).show()
+                }
+                interstitialAd?.show(this)
             }
-            interstitialAd?.show(this)
 
         }
 
@@ -189,7 +192,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkUserAndInitRoom(currentUserId: String) {//이전 사용자랑 비교 함수
+
         val prefs = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val islogin = prefs.getBoolean("isLoginUser", false)
+
         val lastUserIdKey = "last_user_id"
         val lastUserId = prefs.getString(lastUserIdKey, null)
 
@@ -228,5 +234,19 @@ class MainActivity : AppCompatActivity() {
                 }
             },
         )
+    }
+
+    private fun initadv() {
+        MobileAds.initialize(this) { initializationStatus ->
+            // 초기화가 완료되었을 때 실행되는 콜백입니다.
+            val statusMap = initializationStatus.adapterStatusMap
+            for (adapterStatus in statusMap.values) {
+                Log.d(
+                    "AdMob",
+                    "Adapter ${adapterStatus.description}: ${adapterStatus.initializationState}"
+                )
+            }
+            Log.d("AdMob", "Initialization complete.")
+        }
     }
 }
