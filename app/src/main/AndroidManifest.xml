@@ -17,7 +17,7 @@
         >
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="${ADDMOB_APPID}"/>
+            android:value="${AddMob_AppID}"/>
         <activity
             android:name=".MainActivity"
             android:exported="false" />

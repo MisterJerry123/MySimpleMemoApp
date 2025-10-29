@@ -33,7 +33,7 @@ android {
             "ADDMOB_TASKCOMPLETEADV_UNIT_ID",
             properties["TaskCompleteAdv_UnitID"].toString()
         )
-        manifestPlaceholders["ADDMOB_APPID"] = properties["AddMob_AppID"].toString()
+        manifestPlaceholders["AddMob_AppID"] = properties.getProperty("AddMob_AppID")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
