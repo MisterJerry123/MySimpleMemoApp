@@ -1,5 +1,6 @@
 package com.example.memousingroomdb
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +22,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val prefs = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        prefs.edit().putBoolean("isLoginUser",true).apply()
 
         binding.btnLogin.setOnClickListener {//로그인
             val id = binding.etId.text.toString()
@@ -79,7 +81,12 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.tvWithoutSignup.setOnClickListener {
             //TODO 비회원 로직 구현예정
-            Toast.makeText(this, "구현예정입니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            prefs.edit().putBoolean("isLoginUser",false).apply()
+            startActivity(intent)
+            finish()
+
+
         }
     }
 }
