@@ -7,14 +7,14 @@ plugins {
 }
 
 android {
-    namespace = "com.example.memousingroomdb"
+    namespace = "com.misterjerry.simplememo"
     compileSdk = 35
     buildFeatures{
         viewBinding = true
     }
 
     defaultConfig {
-        applicationId = "com.example.memousingroomdb"
+        applicationId = "com.misterjerry.simplememo"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
