@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MemoUsingRoomdb"
+rootProject.name = "SimpleMemo"
 include(":app")
  
