@@ -1,4 +1,4 @@
-package com.example.memousingroomdb
+package com.misterjerry.simplememo
 
 import android.os.Build
 import android.os.Bundle
@@ -10,9 +10,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.memousingroomdb.databinding.FragmentUpdateMemoBinding
-import com.example.memousingroomdb.db.Memo
-import com.example.memousingroomdb.db.MemoDatabase
+import com.misterjerry.simplememo.databinding.FragmentUpdateMemoBinding
+import com.misterjerry.simplememo.db.Memo
+import com.misterjerry.simplememo.db.MemoDatabase
 import java.time.LocalDate
 
 

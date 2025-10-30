@@ -1,16 +1,15 @@
-package com.example.memousingroomdb
+package com.misterjerry.simplememo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.memousingroomdb.databinding.ActivityMainBinding
-import com.example.memousingroomdb.db.Memo
+import com.misterjerry.simplememo.databinding.ActivityMainBinding
+import com.misterjerry.simplememo.db.Memo
 
 class MainActivity : AppCompatActivity() {
 

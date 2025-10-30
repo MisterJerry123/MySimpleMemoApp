@@ -1,9 +1,12 @@
-package com.example.memousingroomdb
+package com.misterjerry.simplememo
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class TouchHelperCallback(private val listener: ItemSwipeListener):ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN,ItemTouchHelper.LEFT) {
+class TouchHelperCallback(private val listener: ItemSwipeListener) : ItemTouchHelper.SimpleCallback(
+    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+    ItemTouchHelper.LEFT
+) {
     interface ItemSwipeListener {
         fun onItemSwiped(position: Int)
         // 필요하다면 onMove를 위한 fun onItemMoved(from, to)도 추가 가능

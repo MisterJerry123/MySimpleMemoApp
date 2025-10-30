@@ -1,4 +1,4 @@
-package com.example.memousingroomdb.db
+package com.misterjerry.simplememo.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -11,20 +11,20 @@ import androidx.room.Update
 @Dao
 interface MemoDao {
     @Insert
-    fun insertMemo(memo:Memo)
+    fun insertMemo(memo: Memo)
 
     @Query("SELECT * From memo")
-    fun search():MutableList<Memo>
+    fun search(): MutableList<Memo>
 
 
     @Query("SELECT * FROM memo ORDER BY cnt ASC")
     fun getAllMemosAsLiveData(): LiveData<List<Memo>>
 
     @Delete
-    fun deleteMemo(memo:Memo)
+    fun deleteMemo(memo: Memo)
 
     @Update
-    fun updateMemo(memo:Memo)
+    fun updateMemo(memo: Memo)
 
     @Query("SELECT COUNT(*) FROM memo")
     fun getItemCount(): Int

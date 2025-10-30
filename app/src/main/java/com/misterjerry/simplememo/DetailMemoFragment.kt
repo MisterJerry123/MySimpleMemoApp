@@ -1,4 +1,4 @@
-package com.example.memousingroomdb
+package com.misterjerry.simplememo
 
 import android.os.Build
 import android.os.Bundle
@@ -7,14 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
-import com.example.memousingroomdb.databinding.FragmentDetailMemoBinding
-import com.example.memousingroomdb.db.Memo
-import com.example.memousingroomdb.db.MemoDatabase
-import java.time.LocalDate
+import com.misterjerry.simplememo.databinding.FragmentDetailMemoBinding
+import com.misterjerry.simplememo.db.Memo
 
 
 class DetailMemoFragment : Fragment() {
@@ -84,6 +80,7 @@ class DetailMemoFragment : Fragment() {
             transaction.commit()
         }
     }
+
     companion object {
         fun newInstance(memo: Memo): DetailMemoFragment {
             val fragment = DetailMemoFragment()

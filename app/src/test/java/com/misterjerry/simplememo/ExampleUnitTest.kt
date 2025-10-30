@@ -1,4 +1,4 @@
-package com.example.memousingroomdb
+package com.misterjerry.simplememo
 
 import org.junit.Test
 

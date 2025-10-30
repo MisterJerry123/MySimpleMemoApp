@@ -1,4 +1,4 @@
-package com.example.memousingroomdb
+package com.misterjerry.simplememo
 
 import android.content.Intent
 import android.os.Build
@@ -7,20 +7,21 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.memousingroomdb.databinding.ActivityAddMemoBinding
-import com.example.memousingroomdb.db.Memo
-import com.example.memousingroomdb.db.MemoDatabase
+import com.misterjerry.simplememo.databinding.ActivityAddMemoBinding
+import com.misterjerry.simplememo.db.Memo
+import com.misterjerry.simplememo.db.MemoDatabase
 import java.time.LocalDate
 
 class AddMemoActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityAddMemoBinding
+    private lateinit var binding: ActivityAddMemoBinding
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddMemoBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val db = MemoDatabase.getInstance(this)
-        val intent = Intent(this,MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
 
         binding.btnCancel.setOnClickListener {
             finish()
@@ -32,16 +33,22 @@ class AddMemoActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-        onBackPressedDispatcher.addCallback(this,callback)
+        onBackPressedDispatcher.addCallback(this, callback)
 
         binding.btnSave.setOnClickListener {
 
-            if(binding.etTitle.text.isBlank()){
+            if (binding.etTitle.text.isBlank()) {
                 Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
-            }
-            else{
+            } else {
                 val cnt = db?.memoDao()?.getItemCount()
-                db?.memoDao()?.insertMemo(Memo(title=binding.etTitle.text.toString(),content = binding.etContent.text.toString(),date = LocalDate.now().toString(), cnt =cnt?.plus(1) ))
+                db?.memoDao()?.insertMemo(
+                    Memo(
+                        title = binding.etTitle.text.toString(),
+                        content = binding.etContent.text.toString(),
+                        date = LocalDate.now().toString(),
+                        cnt = cnt?.plus(1)
+                    )
+                )
                 finish()
                 startActivity(intent)
             }
