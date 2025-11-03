@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -11,6 +13,8 @@ android {
     compileSdk = 35
     buildFeatures{
         viewBinding = true
+        buildConfig = true
+
     }
 
     defaultConfig {
@@ -19,6 +23,21 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        val properties = Properties().apply {
+            load(rootProject.file("local.properties").inputStream())
+        }
+        buildConfigField(
+            "String",
+            "ADMOB_TASKCOMPLETEADV_UNIT_ID",
+            properties["TaskCompleteAdv_UnitID"].toString()
+        )
+        buildConfigField(
+            "String",
+            "ADMOB_APPOPENINGADV_UNITID_UNIT_ID",
+            properties["AppOpeningAdv_UnitId"].toString()
+        )
+        manifestPlaceholders["AdMob_AppID"] = properties.getProperty("AdMob_AppID")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -58,4 +77,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //admob관련
+    implementation(libs.play.services.ads)
 }
