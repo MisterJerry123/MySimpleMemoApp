@@ -1,13 +1,21 @@
 package com.misterjerry.simplememo
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.appopen.AppOpenAd
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.misterjerry.simplememo.databinding.ActivityMainBinding
 import com.misterjerry.simplememo.db.Memo
 
@@ -15,11 +23,21 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val sharedViewModel: MemoSharedViewModel by viewModels()
+    private var interstitialAd: InterstitialAd? = null
+    private var appOpenAd: AppOpenAd? = null
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //광고 초기화 및 사용
+        initadv()
+        loadAppOpeningAd()
+
+
         val intent = Intent(this, AddMemoActivity::class.java)
         val adapter = MemoAdapter()
         sharedViewModel.memoList.observe(this) { memos ->
@@ -89,5 +107,56 @@ class MainActivity : AppCompatActivity() {
                 adapter.deleteMemo(memo)
             }
         }
+    }
+    private fun initadv() {
+        MobileAds.initialize(this) { initializationStatus ->
+            // 초기화가 완료되었을 때 실행되는 콜백입니다.
+            val statusMap = initializationStatus.adapterStatusMap
+            for (adapterStatus in statusMap.values) {
+                Log.d(
+                    "AdMob",
+                    "Adapter ${adapterStatus.description}: ${adapterStatus.initializationState}"
+                )
+            }
+            Log.d("AdMob", "Initialization complete.")
+        }
+    }
+    private fun taskcompleteAd() {
+        InterstitialAd.load(
+            this,
+            BuildConfig.ADMOB_TASKCOMPLETEADV_UNIT_ID,
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    Log.d(TAG, "Ad was loaded.")
+                    interstitialAd = ad
+                    interstitialAd?.show(this@MainActivity)
+                }
+
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d(TAG, adError.message)
+                    interstitialAd = null
+                }
+            },
+        )
+    }
+    private fun loadAppOpeningAd() {
+        AppOpenAd.load(
+            this,
+            BuildConfig.ADMOB_APPOPENINGADV_UNITID_UNIT_ID,
+            AdRequest.Builder().build(),
+            object : AppOpenAd.AppOpenAdLoadCallback() {
+                override fun onAdLoaded(ad: AppOpenAd) {
+                    Log.d(TAG, "Ad was loaded.")
+                    appOpenAd = ad
+                    appOpenAd?.show(this@MainActivity)
+                }
+
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d(TAG, adError.message)
+                    appOpenAd = null
+                }
+            },
+        )
     }
 }
