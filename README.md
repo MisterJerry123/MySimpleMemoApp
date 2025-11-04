@@ -3,6 +3,13 @@
 ## 사용한 기술 스택들
 ```Kotlin```, ```MVVM```, ```ViewModel```, ```Room Database```, ```LiveData```, ```ListAdapter```, ```DiffUtil```, ```ItemTouchHelper```, ```JUnit4```, ```Espresso```, ```Sharedpreference```,  ```Firebase Firestore```, ```Firebase Authentication```, ```Coroutine```
 
+
+## 🔗 PlayStore 출시 예정입니다. 현재 비공개 테스트 진행중에 있습니다.
+<img width="1357" height="907" alt="image" src="https://github.com/user-attachments/assets/c9fc6130-958f-4147-881f-3810f6dab498" />
+
+https://play.google.com/store/apps/details?id=com.misterjerry.simplememo
+
+
 ## 주요 기능 설명
 ### 1️. 메모 저장 기능
 
