@@ -8,6 +8,7 @@
 <img width="1357" height="907" alt="image" src="https://github.com/user-attachments/assets/c9fc6130-958f-4147-881f-3810f6dab498" />
 
 https://play.google.com/store/apps/details?id=com.misterjerry.simplememo
+https://play.google.com/apps/testing/com.misterjerry.simplememo
 
 
 ## 주요 기능 설명
