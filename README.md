@@ -9,6 +9,8 @@
 
 https://play.google.com/store/apps/details?id=com.misterjerry.simplememo
 https://play.google.com/apps/testing/com.misterjerry.simplememo
+2025.11.10 ~ 2025.11.24 비공개 테스트 기간
+2025.12월 내 출시 예정
 
 
 ## 주요 기능 설명
