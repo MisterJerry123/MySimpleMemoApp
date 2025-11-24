@@ -10,6 +10,10 @@
 https://play.google.com/store/apps/details?id=com.misterjerry.simplememo
 https://play.google.com/apps/testing/com.misterjerry.simplememo
 * 2025.11.10 ~ 2025.11.24 비공개 테스트 기간
+* 2025.11.25 프로덕션 액세스 권한 신청 접수
+  <img width="1106" height="612" alt="image" src="https://github.com/user-attachments/assets/1a26af8b-9553-46e4-a985-6f483f5128cc" />
+
+
 * 2025.12월 내 출시 예정
 
 
