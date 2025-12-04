@@ -66,18 +66,10 @@
 
 ## 📥 설치 및 실행 방법 (Installation & Setup)
 
-### 1. 프로젝트 클론 (Clone Repository)
-```bash
-git clone https://github.com/MisterJerry/MemoUsingRoomdb.git
-```
+Google Play Store에서 앱을 다운로드하여 바로 사용할 수 있습니다.
 
-### 2. 프로젝트 열기 (Open Project)
-*   Android Studio를 실행하고 `Open`을 선택하여 클론한 프로젝트 폴더를 엽니다.
-
-### 3. 빌드 및 실행 (Build & Run)
-*   Android 기기를 연결하거나 에뮬레이터를 실행합니다.
-*   Android Studio 상단의 `Run` 버튼(▶️)을 클릭하여 앱을 설치하고 실행합니다.
-*   **Min SDK**: 24 (Android 7.0 Nougat) 이상
+*   **다운로드 링크**: [SimpleMemo - Google Play Store](https://play.google.com/store/apps/details?id=com.misterjerry.simplememo)
+<img width="1471" height="1059" alt="image" src="https://github.com/user-attachments/assets/3bdada76-7bb0-425d-9d5d-4bb5af41bde3" />
 
 ---
 
