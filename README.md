@@ -69,7 +69,7 @@
 Google Play Store에서 앱을 다운로드하여 바로 사용할 수 있습니다.
 
 *   **다운로드 링크**: [SimpleMemo - Google Play Store](https://play.google.com/store/apps/details?id=com.misterjerry.simplememo)
-<a href = "https://play.google.com/store/apps/developer?id=MisterJerry">
+<a href = "https://play.google.com/store/apps/details?id=com.misterjerry.simplememo">
 
 <img width="1471" height="1059" alt="image" src="https://github.com/user-attachments/assets/3bdada76-7bb0-425d-9d5d-4bb5af41bde3" />
 
